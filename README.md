@@ -1,6 +1,8 @@
-# Raissa's Tugas
+# Tugas Individu PBP
 
-Untuk Tugas Individu PBP, saya membuat aplikasi *inventory* bertemakan sebuah tas. Aplikasi bernama *My Bag* dapat dilihat pada [link ini](http://puti-raissa-tutorial.pbp.cs.ui.ac.id/).
+Proyek Django *Inventory* - __My Bag__
+
+Puti Raissa - 2206830391 - PBP E
 
 ## Tugas 3
 
