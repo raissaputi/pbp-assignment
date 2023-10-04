@@ -1,61 +1,57 @@
 {% extends 'base.html' %}
 
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bag</title>
-</head>
-<body>
-    <h1>{{nama_aplikasi}}</h1>
-    <h4>{{nama}}</h4>
-    <h4>{{kelas}}</h4>
-</body>
-</html> -->
-
-
 {% block content %}
-    <h1>MY BAG</h1>
+    <nav class="navbar navbar-expand navbar-dark bg-secondary">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1 fw-bold fs-1">MY BAG</span>
+            <div class="collapse navbar-collapse">
+                <div class="d-flex justify-content-end">
+                    <form class="form.inline">
+                        <a href="{% url 'main:logout' %}">
+                            <button class="btn btn-light" type="button">Logout</button>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <h5>Name:</h5>
-    <p>{{nama}}</p>
+    <div class="container">
+        <br>
+        <h1>Hallo, {{nama}}!</h1>
+        <h6 class="text-muted">Sesi terakhir login: {{ last_login }}</h6>
 
-    <h5>Class:</h5>
-    <p>{{kelas}}</p>
-
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Description</th>
-        </tr>
-    
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    
-        {% for item in items %}
+        <br>
+        <table class="table table-bordered">
             <tr>
-                <td>{{item.name}}</td>
-                <td>{{item.amount}}</td>
-                <td>{{item.description}}</td>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Description</th>
             </tr>
-        {% endfor %}
-    </table>
-    
-    <br />
-    
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Item
-        </button>
-    </a>
+                
+            {% for item in items %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.description}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+        <br />
+        
+        <a href="{% url 'main:create_product' %}">
+            <button class="btn btn-light">
+                Add New Item
+            </button>
+        </a>
 
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    </div>
 
-    <a href="{% url 'main:logout' %}">
-        <button>
-            Logout
-        </button>
-    </a>
+    <footer class="footer">
+        <div class="container">
+          <span class="text-muted">Puti Raissa - {{kelas}}</span>
+        </div>
+    </footer>
 
 {% endblock content %}

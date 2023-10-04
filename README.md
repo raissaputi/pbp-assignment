@@ -359,6 +359,9 @@ JSON sering digunakan dalam pertukaran data antara aplikasi web modern karena le
 
 </details>
 
+<details>
+<summary>Tugas 4</summary>
+
 ## Tugas 4
 
 ### Apa itu Django *UserCreationForm*, dan jelaskan apa kelebihan dan kekurangannya?
@@ -485,3 +488,212 @@ Meskipun cookie sering digunakan untuk fungsi situs web yang tidak berbahaya, me
 
 ![marco](images/marco.jpg)
 ![polo](images/polo.jpg)    
+</details>
+
+## Tugas 5
+
+### Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+
+- Element selector
+
+    Element selector menggunakan tag HTML sebagai selector untuk mengubah properti yang terdapat dalam tag tersebut. Setiap elemen yang memiliki tag HTML tersebut akan memiliki properti yang sama. 
+
+    Selector ini bisa digunakan jika ingin menerapkan gaya secara umum ke suatu jenis elemen, misalnya, mengubah gaya teks untuk semua \<p> (paragraf) atau \<h1> (judul level 1) dalam dokumen.
+
+    ```
+    p {
+        font-size: 16px;
+        color: #eaea
+    }
+    ```
+
+- ID Selector
+
+    ID selector menggunakan atribut id dari elemen HTML untuk memilih elemen tertentu. Cara ini secara unik menargetkan satu elemen di dalam halaman HTML.
+
+    Selector ini baik digunakan saat ada elemen tunggal dalam dokumen dengan ID unik dan akan diterapkan gaya khusus.
+
+    Selector ditulis dengan tanda # diikuti dengan id elemen.
+
+    ```
+    #footer {
+        text-align: center;
+        color: #eaea;
+    }
+    ```
+
+- Class Selector
+    
+    Class Selector memungkinkan kita untuk mengelompokkan elemen dengan karakteristik yang sama. Selector ini dapat digunakan untuk menetapkan gaya tambahan pada elemen yang sudah memiliki gaya dasar. Selector ini bisa digunakan ketika ingin menerapkan gaya pada beberapa elemen yang memiliki karakteristik atau fungsi yang sama.
+
+    Selector Class ditulis dengan tanda . dan dikuti dengan class elemen.
+
+    ```
+    .center {
+        text-align: center;
+        color: #eaea;
+    }
+    ```
+
+### Jelaskan HTML5 Tag yang kamu ketahui.
+
+- \<header>\</header>
+
+    Digunakan untuk mendefinisikan bagian header untuk elemen yang mengandungnya. Ini dapat digunakan sebagai header untuk seluruh halaman, tetapi juga dapat digunakan sebagai header untuk sebuah artikel atau konten halaman lainnya
+
+- \<nav>\</nav>
+
+    Elemen ini mengidentifikasi sebuah kelompok tautan navigasi. Tautan dalam elemen ini dapat mengarah ke halaman web lain atau ke bagian yang berbeda dari halaman web yang sama.
+
+- \<footer>\</footer>
+
+    Elemen ini adalah elemen struktural yang digunakan untuk mengidentifikasi footer dari sebuah halaman, dokumen, artikel, atau bagian. Sebuah footer umumnya berisi informasi hak cipta dan kepemilikan penulis atau elemen navigasi yang berkaitan dengan isi elemen induk.
+
+### Jelaskan perbedaan antara margin dan padding.
+
+Dalam model box CSS margin dapat didefinisikan sebagai ruang transparan di sekitar Border suatu elemen dan merupakan lapisan terluar dari model box. Sebaliknya, padding merupakan lapisan terdalam dalam model box CSS dan digunakan untuk merepresentasikan ruang transparan terdeket dengan elemen yaitu di sekitar konten suatu elemen.
+
+### Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+|Bootstrap|Tailwind|
+|:---|:---|
+|Menawarkan tema dan templat siap pakai.|Menawarkan kelas utilitas yang unik.|
+|Menghasilkan tampilan serupa karena memiliki templat bawaan untuk situs web.|Hasil lebih unik dan fleksibel|
+Lebih mudah untuk pemula|Perlu dipelajari lebih dalam
+
+Gunakan Tailwind untuk desain yang unik dan sangat disesuaikan, kontrol yang sangat detail terhadap gaya, dan jika ingin membuat komponen dari awal. Gunakan Bootstrap jika mementingkan kecepatan, keahlian desain terbatas, atau jika ingin menggunakan komponen yang sudah jadi dan terstandarisasi untuk pengembangan cepat. Tailwind menawarkan fleksibilitas, sementara Bootstrap memberikan pendekatan terstruktur dengan komponen yang siap pakai.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- Kustomisasi halaman login, register, dan tambah inventori semenarik mungkin
+
+    Saya memutuskan untuk menggunakan Bootstrap untuk tugas kali ini. 
+
+    Pertama saya menambahkan Bootstrap ke aplikasi pada `base.html` di bagian tag \<head> beserta selector yang saya buat dalam tag \<style>.
+
+    ```
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #E4E4F0;
+        }
+
+        #login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            height: auto;
+            background-color: #E4E4F0;
+        }
+
+        .login {
+            width: 100%;
+            max-width: 330px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        .register {
+            width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        h1 {
+            padding: 5px;
+        }
+
+        table, th, td {
+            padding: 5px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            background-color: #D4D4E7;
+        }
+    </style>
+    ``` 
+
+    Kemudian saya modifikasi file `login.html`, `register.html`, dan `create_product.html` menggunakan selector yang sudah dibuat, mengatur model box konten pada tiap file, serta mengubah beberapa elemen seperti button supaya lebih menarik dan seragam.
+
+    `login.html`
+
+    ```
+    <div id="login">
+        <div class = "login">
+            <h1 class="text-center">Login</h1>
+            ...
+
+                <td></td>
+                <td><input class="btn btn-outline-dark" type="submit" value="Login"></td>
+            ...
+    ```
+
+    `register.html`
+
+    ```
+    <div id = "login">
+        <div class="register">
+            <h1 class="text-center">Register</h1>  
+            ...
+    ```
+
+    `create_product.html`
+
+    ```
+    ...
+    <td>
+        <input type="submit" class="btn btn-light" value="Add Item"/> 
+    </td>
+    ...
+    ```
+
+
+- Kustomisasi halaman daftar inventori menjadi lebih berwarna maupun menggunakan apporach lain seperti menggunakan Card.
+
+    Halaman daftar inventori di `main.html` dan file html lainnya saya berikan warna background yang seragam supaya lebih berwarna. Selain itu di halamam utama saya berikan navigation bar dan footer yang berisi beberapa informasi seperti nama aplikasi dan nama saya sendiri.
+
+    Saya juga memindahkan tombol logout ke dalam navigation bar karena lebih bagus :).
+
+    Navigation bar
+    ```
+    <nav class="navbar navbar-expand navbar-dark bg-secondary">
+        <div class="container">
+            <a class="navbar-brand mb-0 h1">MY BAG</a>
+            <div class="collapse navbar-collapse">
+                <div class="d-flex justify-content-end">
+                    <form class="form.inline">
+                        <a href="{% url 'main:logout' %}">
+                            <button class="btn btn-light" type="button">Logout</button>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    ```
+
+    Footer
+    ```
+    <footer class="footer">
+        <div class="container">
+          <span class="text-muted">Puti Raissa - {{kelas}}</span>
+        </div>
+    </footer>
+    ```
+
+    Kemudian saya mengganti beberapa hal sepserti button dan tabel supaya lebih bagus.
+
+    ```
+    <table class="table table-bordered">
+    ...
+    <button class="btn btn-light">
+    ```
