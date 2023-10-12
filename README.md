@@ -278,7 +278,7 @@ JSON sering digunakan dalam pertukaran data antara aplikasi web modern karena le
     untuk menampilkan data produk yang diterima dari view show_main dalam bentuk tabel, serta
     ```
     <a href="{% url 'main:create_product' %}">
-        <button>
+        <*button*>
             Add New Item
         </button>
     </a>
@@ -706,18 +706,155 @@ Gunakan Tailwind untuk desain yang unik dan sangat disesuaikan, kontrol yang san
 
 ## Tugas 6
 
-### Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+### Jelaskan perbedaan antara *asynchronous* programming dengan synchronous programming.
 
-Asynchronous programming menerapkan suatu metode pemrograman yang tidak bergantung pada protokol I/O. Dalam pemrograman asynchronous, programming dilakukan bukan dengan gaya lama. Eksekusi tugas tidak dilakukan dengan mengeksekusi baris program satu per satu sesuai paradigma dan urutan program dalam kode. Sebaliknya, pemrograman asynchronous memungkinkan eksekusi program tanpa ketergantungan pada proses lain, yang dapat disebut sebagai operasi independen. Sementara synchronous programming memiliki gaya pemrograman lama. Program dieksekusi secara berurutan sesuai dengan urutan dan prioritasnya. Pendekatan ini memiliki kelemahan dalam hal waktu eksekusi yang lama karena setiap tugas harus menunggu penyelesaian tugas lain sebelum dapat diproses.
+*Asynchronous* programming menerapkan suatu metode pemrograman yang tidak bergantung pada protokol I/O. Dalam pemrograman *asynchronous*, programming dilakukan bukan dengan gaya lama. Eksekusi tugas tidak dilakukan dengan mengeksekusi baris program satu per satu sesuai paradigma dan urutan program dalam kode. Sebaliknya, pemrograman *asynchronous* memungkinkan eksekusi program tanpa ketergantungan pada proses lain, yang dapat disebut sebagai operasi independen. Sementara synchronous programming memiliki gaya pemrograman lama. Program dieksekusi secara berurutan sesuai dengan urutan dan prioritasnya. Pendekatan ini memiliki kelemahan dalam hal waktu eksekusi yang lama karena setiap tugas harus menunggu penyelesaian tugas lain sebelum dapat diproses.
 
-### Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+### Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma *event-driven programming*. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
 
-Event-driven programming merupakan paradigma pemrograman yang membangun dan mengorganisir alur kode untuk merespons peristiwa yang berasal dari sumber eksternal seperti masukan pengguna atau perubahan sistem.
+*Event-driven programming* merupakan paradigma pemrograman yang fokus merespons peristiwa yang berasal dari sumber eksternal seperti masukan pengguna atau perubahan sistem. Contoh penerapannya pada aplikasi ini adalah *button* *delete*. Jika *button* ini ditekan (*event*), maka akan dijalankan fungsi deleteProduct.
 
-### Jelaskan penerapan asynchronous programming pada AJAX.
+### Jelaskan penerapan *asynchronous* programming pada AJAX.
 
-
+AJAX, atau *Asynchronous* JavaScript and XML, menerapkan pertukaran data *asynchronous* antara *browser* web dan server. Setelah pemuatan halaman HTML awal, data dapat diperbarui secara dinamis tanpa harus me-reload seluruh halaman web. Ini membuat interaksi lebih responsif, karena data dapat diperbarui di latar belakang tanpa mengganggu pengguna. Dengan eksekusi *asynchronous*, AJAX menjaga kecepatan dan fleksibilitas dalam menanggapi pengguna serta mempertahankan lingkungan yang didorong oleh data, bukan halaman.
 
 ### Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
 
 ### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+  - AJAX GET
+    
+    Membuat fungsi untuk menampilkan data produk yang di*filter* untuk *user* yang telah *login* dan menambahkan path url ke `urls.py`.
+
+    ```
+    def get_product_json(request):
+        product_item = Item.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('json', product_item))
+    ```
+
+    Karena pada tugas sebelumnya saya memakai tabel bukan *cards*, saya membuat *cards* terlebih dahulu.
+
+    Membuat strukur *cards* menggunakan layout grid.
+
+    ```
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="item_card"></div>
+    ```
+    Membuat fungsi untuk melakukan fetch data JSON di dalam tag \<script> pada main.html. Data di*fetch* secara*asynchronous*.
+
+    ```
+    async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+    }
+    ```
+
+    Membuat fungsi pada \<script> yang akan memperbarui data-data secara *asynchronous* jika terjadi suatu *event* tanpa me-*reload* halaman. Pada fungsi ini ada *loop* yang mengiterasi semua *item* milik *user* dan menampilkan atributnya dalam bentuk *cards*. 
+
+    ```
+    async function refreshProducts() {
+        document.getElementById("item_card").innerHTML = ""
+        const products = await getProducts()
+        let htmlString = ``
+        products.forEach((item) => {
+            htmlString += `\n<div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">${item.fields.name}</h5>
+                    <p class="card-text">Amount: ${item.fields.amount}</p>
+                    <p class="card-text">${item.fields.description}</p>
+                    <button class="btn btn-outline-warning" onclick="deleteProduct(${item.pk})">Delete</button>
+                </div>
+            </div>
+        </div>` 
+        })
+        
+        document.getElementById("item_card").innerHTML = htmlString
+    }
+    ```
+
+  - AJAX POST
+    - Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item.
+
+    Button
+
+    ```
+    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addItemModal">Add Item by AJAX</button>
+    ```
+    Modal
+    ```
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #D4D4E7;">
+                    <h1 class="modal-title fs-5" id="addItemModalLabel">Add New Item</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #E4E4F0;">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #D4D4E7;">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light" id="button_add" data-bs-dismiss="modal">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    ```
+
+
+    - Buatlah fungsi *view* baru untuk menambahkan item baru ke dalam basis data.
+
+    ```
+    @csrf_exempt
+    def create_ajax(request):
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            amount = request.POST.get("amount")
+            description = request.POST.get("description")
+            user = request.user
+
+            new_item = Item(name=name, amount=amount, description=description, user=user)
+            new_item.save()
+
+            return HttpResponse(b"CREATED", status=201)
+
+        return HttpResponseNotFound()
+    ```
+
+    - Buatlah *path* `/create-ajax/` yang mengarah ke fungsi *view* yang baru kamu buat.
+
+    ```
+    path('create-ajax/', create_ajax, name='create_ajax'),
+    ```
+
+    - Hubungkan form yang telah kamu buat di dalam modal kamu ke *path* `/create-ajax/`.
+
+    - Lakukan *refresh* pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa *reload* halaman utama secara keseluruhan.
+
+    ```
+    function addProduct() {
+        fetch("{% url 'main:create_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+    ```
+
+  - Melakukan perintah `collectstatic`.
+    - Perintah ini bertujuan untuk mengumpulkan *file static* dari setiap aplikasi kamu ke dalam suatu *folder* yang dapat dengan mudah disajikan pada produksi.
