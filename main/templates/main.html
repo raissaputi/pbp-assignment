@@ -1,57 +1,115 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <nav class="navbar navbar-expand navbar-dark bg-secondary">
-        <div class="container">
-            <span class="navbar-brand mb-0 h1 fw-bold fs-1">MY BAG</span>
-            <div class="collapse navbar-collapse">
-                <div class="d-flex justify-content-end">
-                    <form class="form.inline">
-                        <a href="{% url 'main:logout' %}">
-                            <button class="btn btn-light" type="button">Logout</button>
-                        </a>
-                    </form>
+    <div class="sticky-top">
+        <nav class="navbar navbar-expand navbar-dark bg-dark">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1 fw-bold fs-1">MY BAG</span>
+                <div class="collapse navbar-collapse">
+                    <div class="d-flex justify-content-end">
+                        <form class="form.inline">
+                            <a href="{% url 'main:logout' %}">
+                                <button class="btn btn-light" type="button">Logout</button>
+                            </a>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <br>
+        </nav>
+    </div>
+        
+    <div class="container" style="padding-bottom: 80px; padding-top: 10px;">
         <h1>Hallo, {{nama}}!</h1>
         <h6 class="text-muted">Sesi terakhir login: {{ last_login }}</h6>
 
         <br>
-        <table class="table table-bordered">
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Description</th>
-            </tr>
-                
-            {% for item in items %}
-                <tr>
-                    <td>{{item.name}}</td>
-                    <td>{{item.amount}}</td>
-                    <td>{{item.description}}</td>
-                </tr>
-            {% endfor %}
-        </table>
-        
+
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="item_card"></div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #D4D4E7;">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Item</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background-color: #E4E4F0;">
+                        <form id="form" onsubmit="return false;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="name" name="name"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="col-form-label">Amount:</label>
+                                <input type="number" class="form-control" id="amount" name="amount"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="col-form-label">Description:</label>
+                                <textarea class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="background-color: #D4D4E7;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-light" id="button_add" data-bs-dismiss="modal">Add Item</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <br />
-        
-        <a href="{% url 'main:create_product' %}">
-            <button class="btn btn-light">
-                Add New Item
-            </button>
-        </a>
+
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
 
     </div>
 
-    <footer class="footer">
-        <div class="container">
-          <span class="text-muted">Puti Raissa - {{kelas}}</span>
-        </div>
-    </footer>
+    <div class="sticky-bottom">
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">Puti Raissa - {{kelas}}</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+            document.getElementById("item_card").innerHTML = ""
+            const products = await getProducts()
+            let htmlString = ``
+            products.forEach((item) => {
+                htmlString += `\n<div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.fields.name}</h5>
+                        <p class="card-text">Amount: ${item.fields.amount}</p>
+                        <p class="card-text">${item.fields.description}</p>
+                    </div>
+                </div>
+            </div>` 
+            })
+            
+            document.getElementById("item_card").innerHTML = htmlString
+        }
+
+        refreshProducts()
+
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+
+        document.getElementById("button_add").onclick = addProduct
+
+    </script>
 
 {% endblock content %}

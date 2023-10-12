@@ -490,6 +490,10 @@ Meskipun cookie sering digunakan untuk fungsi situs web yang tidak berbahaya, me
 ![polo](images/polo.jpg)    
 </details>
 
+
+<details>
+<summary>Tugas 5</summary>
+
 ## Tugas 5
 
 ### Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
@@ -697,3 +701,23 @@ Gunakan Tailwind untuk desain yang unik dan sangat disesuaikan, kontrol yang san
     ...
     <button class="btn btn-light">
     ```
+
+</details>
+
+## Tugas 6
+
+### Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+
+Asynchronous programming menerapkan suatu metode pemrograman yang tidak bergantung pada protokol I/O. Dalam pemrograman asynchronous, programming dilakukan bukan dengan gaya lama. Eksekusi tugas tidak dilakukan dengan mengeksekusi baris program satu per satu sesuai paradigma dan urutan program dalam kode. Sebaliknya, pemrograman asynchronous memungkinkan eksekusi program tanpa ketergantungan pada proses lain, yang dapat disebut sebagai operasi independen. Sementara synchronous programming memiliki gaya pemrograman lama. Program dieksekusi secara berurutan sesuai dengan urutan dan prioritasnya. Pendekatan ini memiliki kelemahan dalam hal waktu eksekusi yang lama karena setiap tugas harus menunggu penyelesaian tugas lain sebelum dapat diproses.
+
+### Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+
+Event-driven programming merupakan paradigma pemrograman yang membangun dan mengorganisir alur kode untuk merespons peristiwa yang berasal dari sumber eksternal seperti masukan pengguna atau perubahan sistem.
+
+### Jelaskan penerapan asynchronous programming pada AJAX.
+
+
+
+### Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
