@@ -720,6 +720,8 @@ AJAX, atau *Asynchronous* JavaScript and XML, menerapkan pertukaran data *asynch
 
 ### Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
 
+Fetch API dan jQuery adalah alat yang digunakan dalam pengembangan web untuk membuat permintaan data secara asynchronous. Fetch API menyediakan cara modern dan lebih fleksibel dengan menggunakan konsep seperti Promise, async/await, dan fetch untuk mengelola permintaan HTTP. Meskipun konsep-konsep ini mungkin memerlukan waktu untuk pemahaman awal, Fetch API menawarkan keuntungan jangka panjang dalam hal kejelasan dan manajemen operasi asynchronous. Sebagai alternatif, jQuery, yang sudah lama digunakan, memberikan cara lebih tradisional dengan abstraksi tinggi untuk menangani permintaan AJAX. Namun, kelemahannya termasuk ukuran yang lebih besar dan ketergantungan pada callback, yang dapat membuat kode menjadi kurang bersih dan sulit dipahami. Fetch API adalah pilihan yang lebih baik untuk banyak proyek modern karena lebih ringan, lebih kuat, dan sesuai dengan tren saat ini.
+
 ### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
   - AJAX GET
@@ -772,7 +774,8 @@ AJAX, atau *Asynchronous* JavaScript and XML, menerapkan pertukaran data *asynch
     ```
 
   - AJAX POST
-    - Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item.
+    
+    Untuk mengimplementasi AJAX POST, pertama saya membuat sebuah tombol yang akan membuka sebuah modal dengan form untuk menambahkan item.
 
     Button
 
@@ -814,8 +817,7 @@ AJAX, atau *Asynchronous* JavaScript and XML, menerapkan pertukaran data *asynch
     </div>
     ```
 
-
-    - Buatlah fungsi *view* baru untuk menambahkan item baru ke dalam basis data.
+    Kemudian saya membuat fungsi *view* baru untuk menambahkan item baru ke dalam *database*.
 
     ```
     @csrf_exempt
@@ -834,15 +836,13 @@ AJAX, atau *Asynchronous* JavaScript and XML, menerapkan pertukaran data *asynch
         return HttpResponseNotFound()
     ```
 
-    - Buatlah *path* `/create-ajax/` yang mengarah ke fungsi *view* yang baru kamu buat.
+    Lalu ditambahkan path url nya pada urls.py
 
     ```
     path('create-ajax/', create_ajax, name='create_ajax'),
     ```
 
-    - Hubungkan form yang telah kamu buat di dalam modal kamu ke *path* `/create-ajax/`.
-
-    - Lakukan *refresh* pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa *reload* halaman utama secara keseluruhan.
+    Kemudian form dalam modal yang sudah dibuat disambungkan ke path `/create-ajax/` dengan membuat fungsi pada blok \<script>. Setelah item baru dibuat, halaman akan diperbaharui secara *asynchronous* dengan dipanggilnya fungsi refreshProduct.
 
     ```
     function addProduct() {
@@ -857,4 +857,35 @@ AJAX, atau *Asynchronous* JavaScript and XML, menerapkan pertukaran data *asynch
     ```
 
   - Melakukan perintah `collectstatic`.
-    - Perintah ini bertujuan untuk mengumpulkan *file static* dari setiap aplikasi kamu ke dalam suatu *folder* yang dapat dengan mudah disajikan pada produksi.
+    
+    Terakhir, saya jalankan perintah `python manage.py collectstatic` untuk mengumpulkan file static pada aplikasi.
+
+  - Bonus
+    
+    Menambahkan fitur *delete* dengan membuat fungsi *views* dan menambahkan url path nya.
+
+    `views.py`
+    ```
+    def delete_ajax(request, id):
+        item = Item.objects.get(pk = id)
+        item.delete()
+        print("ok")
+        return HttpResponse(b"DELETED", status=201)
+    ```
+    `urls.py`
+    ```
+    path('delete-ajax/<int:id>/', delete_ajax, name='delete_ajax'),
+    ```
+
+    Lalu menambahkan button pada tiap *card* dan *event handler* yang mengarahkan pada fungsi untuk menghapus *item*.
+
+    ```
+    <button class="btn btn-outline-warning" onclick="deleteProduct(${item.pk})">Delete</button>
+    ```
+
+    ```
+    function deleteProduct(id) {
+        fetch(`delete-ajax/${id}/`).then(refreshProducts);
+    }
+    ```
+    Setelah fungsi dipanggil, halaman akan diperbarui secara *asynchronous* tanpa me-*reload* satu halaman secara keseluruhan.
