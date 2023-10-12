@@ -51,7 +51,7 @@
                         </form>
                     </div>
                     <div class="modal-footer" style="background-color: #D4D4E7;">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-light" id="button_add" data-bs-dismiss="modal">Add Item</button>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
 
     </div>
 
-    <div class="sticky-bottom">
+    <div class="fixed-bottom">
         <footer class="footer">
             <div class="container">
                 <span class="text-muted">Puti Raissa - {{kelas}}</span>
@@ -88,6 +88,7 @@
                         <h5 class="card-title">${item.fields.name}</h5>
                         <p class="card-text">Amount: ${item.fields.amount}</p>
                         <p class="card-text">${item.fields.description}</p>
+                        <button class="btn btn-outline-warning" onclick="deleteProduct(${item.pk})">Delete</button>
                     </div>
                 </div>
             </div>` 
@@ -99,7 +100,7 @@
         refreshProducts()
 
         function addProduct() {
-            fetch("{% url 'main:add_product_ajax' %}", {
+            fetch("{% url 'main:create_ajax' %}", {
                 method: "POST",
                 body: new FormData(document.querySelector('#form'))
             }).then(refreshProducts)
@@ -109,6 +110,10 @@
         }
 
         document.getElementById("button_add").onclick = addProduct
+
+        function deleteProduct(id) {
+            fetch(`delete-ajax/${id}/`).then(refreshProducts);
+        }
 
     </script>
 

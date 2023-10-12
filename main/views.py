@@ -99,7 +99,7 @@ def get_product_json(request):
     return HttpResponse(serializers.serialize('json', product_item))
 
 @csrf_exempt
-def add_product_ajax(request):
+def create_ajax(request):
     if request.method == 'POST':
         name = request.POST.get("name")
         amount = request.POST.get("amount")
@@ -112,3 +112,9 @@ def add_product_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+def delete_ajax(request, id):
+    item = Item.objects.get(pk = id)
+    item.delete()
+    print("ok")
+    return HttpResponse(b"DELETED", status=201)
