@@ -118,3 +118,22 @@ def delete_ajax(request, id):
     item.delete()
     print("ok")
     return HttpResponse(b"DELETED", status=201)
+
+@csrf_exempt
+def create_item_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_item = Item.objects.create(
+            user = request.user,
+            name = data["name"],
+            amount = int(data["amount"]),
+            description = data["description"]
+        )
+
+        new_item.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
